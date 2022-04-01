@@ -13,11 +13,13 @@ import java.util.LinkedList;
  */
 public class Node {
     String nombre;
+    boolean visitado;
     LinkedList<Node> adyacentes;
     
     public Node(String s){
         this.nombre = s;
         this.adyacentes = new LinkedList<Node>();
+        visitado = false;
     }
     
     public void EliminarAristas(){

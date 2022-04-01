@@ -7,7 +7,13 @@ package labgraphs;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,11 +25,13 @@ public class Interface extends javax.swing.JFrame {
    boolean delv = false;
    boolean adda = false;
    boolean dela = false;
+   boolean cmin = false;
    int cont=0;
    Arista atemp;
    Node ntemp;
    LinkedList<Integer> posx;
    LinkedList<Integer> posy;
+   BufferedImage mapa = null;
    //LinkedList<Integer[]> posx2;
    //LinkedList<Integer[]> posy2;
    Grafo gr = new Grafo();
@@ -31,6 +39,10 @@ public class Interface extends javax.swing.JFrame {
         initComponents();
         posx = new LinkedList<Integer>();
         posy = new LinkedList<Integer>();
+            try 
+        {mapa = ImageIO.read(new File("C:\\Users\\Santi Mercado\\Documents\\NetBeansProjects\\LabGraphs\\src\\Img\\mapafortnite.jpg"));}
+    catch (IOException e)
+        {e.printStackTrace();}
         //posx2 = new LinkedList<Integer[]>();
         //posy2 = new LinkedList<Integer[]>();
     }
@@ -46,6 +58,7 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        mt = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         prompt = new javax.swing.JLabel();
         invertice = new javax.swing.JTextField();
@@ -54,12 +67,20 @@ public class Interface extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         ina = new javax.swing.JTextField();
+        templabel = new javax.swing.JLabel();
+        inv = new javax.swing.JTextField();
+        bfs = new javax.swing.JButton();
+        dfs = new javax.swing.JButton();
+        recorrido = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 3, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Laboratorio #2 Estructuras de Datos II");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(10, 0, 1180, 47);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -68,16 +89,23 @@ public class Interface extends javax.swing.JFrame {
             }
         });
 
+        mt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/mapafortnite.jpg"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(mt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 598, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(mt)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(16, 246, 1160, 600);
 
         jButton1.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         jButton1.setText("Añadir vértice");
@@ -86,9 +114,13 @@ public class Interface extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(190, 70, 150, 27);
 
         prompt.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         prompt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(prompt);
+        prompt.setBounds(20, 172, 1166, 25);
 
         invertice.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         invertice.setText("Introduzca el nombre");
@@ -98,10 +130,14 @@ public class Interface extends javax.swing.JFrame {
                 inverticeActionPerformed(evt);
             }
         });
+        getContentPane().add(invertice);
+        invertice.setBounds(30, 70, 147, 24);
 
         prompt2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         prompt2.setForeground(new java.awt.Color(255, 51, 51));
         prompt2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(prompt2);
+        prompt2.setBounds(20, 210, 1166, 25);
 
         jButton2.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         jButton2.setText("Eliminar vértice");
@@ -110,6 +146,8 @@ public class Interface extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2);
+        jButton2.setBounds(280, 130, 150, 27);
 
         jButton3.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         jButton3.setText("Añadir arista");
@@ -118,6 +156,8 @@ public class Interface extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton3);
+        jButton3.setBounds(540, 70, 170, 27);
 
         jButton4.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         jButton4.setText("Eliminar arista");
@@ -126,6 +166,8 @@ public class Interface extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton4);
+        jButton4.setBounds(470, 130, 170, 27);
 
         ina.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         ina.setText("Introduzca el peso");
@@ -135,186 +177,76 @@ public class Interface extends javax.swing.JFrame {
                 inaActionPerformed(evt);
             }
         });
+        getContentPane().add(ina);
+        ina.setBounds(380, 70, 147, 24);
+        getContentPane().add(templabel);
+        templabel.setBounds(689, 97, 0, 0);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(prompt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(42, 42, 42)
-                            .addComponent(invertice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(48, 48, 48)
-                            .addComponent(ina, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(prompt2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE)))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(invertice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4)))
-                        .addGap(18, 32, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(ina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(prompt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(prompt2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        inv.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        inv.setText("Introduzca el vértice inicial");
+        inv.setMinimumSize(new java.awt.Dimension(80, 24));
+        inv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                invActionPerformed(evt);
+            }
+        });
+        getContentPane().add(inv);
+        inv.setBounds(750, 70, 170, 24);
+
+        bfs.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        bfs.setText("BFS");
+        bfs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(bfs);
+        bfs.setBounds(930, 80, 150, 20);
+
+        dfs.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        dfs.setText("DFS");
+        dfs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dfsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(dfs);
+        dfs.setBounds(930, 60, 150, 20);
+
+        recorrido.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        recorrido.setText("Recorrido Mínimo");
+        recorrido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recorridoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(recorrido);
+        recorrido.setBounds(680, 130, 170, 27);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-@Override
+ @Override
 public void paintComponents(Graphics g){
-    this.revalidate();
-    if (addv == true){
-        boolean draw = true;
-        for (int i=0; i<posx.size(); i++) {
-            if(jPanel1.getMousePosition().x >= posx.get(i)-50 && jPanel1.getMousePosition().x <= posx.get(i)+50){
-               if(jPanel1.getMousePosition().y >= posy.get(i)-50 && jPanel1.getMousePosition().y <= posy.get(i)+50){
-                    draw = false; 
-                } 
-            }
-        }
-        
-        if (draw == true){
-            g.setColor(Color.BLUE);
-           g.fillOval(jPanel1.getMousePosition().x, jPanel1.getMousePosition().y, 20, 20);
-            posx.add(jPanel1.getMousePosition().x);
-            posy.add(jPanel1.getMousePosition().y); 
-        } else {
-            prompt2.setText("No puede añadir un vértice tan cerca de otro. Por favor vuelva a intentarlo");
-        }
-        addv = false;
-        prompt.setText(null);
-    }
-    
-    if (delv == true){
-       boolean draw = false;
-        for (int i=0; i<posx.size(); i++) {
-            if(jPanel1.getMousePosition().x >= posx.get(i)-20 && jPanel1.getMousePosition().x <= posx.get(i)+20){
-               if(jPanel1.getMousePosition().y >= posy.get(i)-20 && jPanel1.getMousePosition().y <= posy.get(i)+20){
-                    draw = true; 
-                    g.setColor(Color.WHITE);
-                    g.fillOval(posx.get(i), posy.get(i), 20, 20);
-                    for(int z=0; z<gr.aristas.size(); z++){
-                        if (gr.aristas.get(z).n1 == gr.vertices.get(i) || gr.aristas.get(z).n2 == gr.vertices.get(i)){
-                            if(gr.aristas.get(z).n1 == gr.vertices.get(i)){
-                                for (int k=0; k<gr.vertices.size(); k++){
-                                    if (gr.vertices.get(k) == gr.aristas.get(z).n2){
-                                        g.drawLine(posx.get(i)+8, posy.get(i)+8, posx.get(k)+8, posy.get(k)+8); 
-                                        g.fillRect(((posx.get(i)+posx.get(k))/2-15), ((posy.get(i)+posy.get(k))/2-15), 30, 30);
-                                        g.setColor(Color.BLUE);
-                                        g.fillOval(posx.get(k), posy.get(k), 20, 20);
-                                    }
-                                }    
-                            } else {   
-                               for (int k=0; k<gr.vertices.size(); k++){
-                                    if (gr.vertices.get(k) == gr.aristas.get(z).n1){
-                                        g.drawLine(posx.get(i)+8, posy.get(i)+8, posx.get(k)+8, posy.get(k)+8);
-                                        g.fillRect(((posx.get(i)+posx.get(k))/2-15), ((posy.get(i)+posy.get(k))/2-15), 30, 30);
-                                        g.setColor(Color.BLUE);
-                                        g.fillOval(posx.get(k), posy.get(k), 20, 20);
-                                    }
-                                }  
-                            }
-                           
-                        }
-                        gr.aristas.remove(z);
-                    }
-                    gr.vertices.remove(i);
-                    posx.remove(i);
-                    posy.remove(i);
-                } 
-            }
-        }
-        
-        if (draw == false){
-           prompt2.setText("No seleccionó un vértice. Por favor vuelva a intentarlo"); 
-        }  
-        delv = false; 
-        prompt.setText(null);
-    }
-    
-    if ((dela == true || adda == true) && cont == 2){
-        if (adda == true){
-          g.setColor(Color.BLACK);
-        for (int i=0; i< gr.vertices.size(); i++){
-            if(gr.aristas.get(gr.aristas.size()-1).n1 == gr.vertices.get(i)){
-                for(int j=0; j< gr.vertices.size(); j++){
-                    if (gr.aristas.get(gr.aristas.size()-1).n2 == gr.vertices.get(j)){
-                        g.drawLine(posx.get(i)+8, posy.get(i)+8, posx.get(j)+8, posy.get(j)+8);
-                        g.drawString(ina.getText(), (posx.get(i)+posx.get(j))/2, (posy.get(i)+posy.get(j))/2);
-                        g.setColor(Color.BLUE);
-                        g.fillOval(posx.get(i), posy.get(i), 20, 20);
-                        g.fillOval(posx.get(j), posy.get(j), 20, 20);  
+    this.revalidate(); 
+    g.drawImage(mapa, 0, 0, null);
+    for(int i=0; i<gr.aristas.size(); i++){
+        for (int j=0; j<gr.vertices.size(); j++){
+            if (gr.vertices.get(j) == gr.aristas.get(i).n1){
+                for(int k=0; k<gr.vertices.size(); k++){
+                    if(gr.vertices.get(k) == gr.aristas.get(i).n2){
+                        g.setColor(Color.MAGENTA);
+                        g.drawLine(posx.get(j)+8, posy.get(j)+8, posx.get(k)+8, posy.get(k)+8);
+                        g.drawString(Integer.toString(gr.aristas.get(i).peso), (posx.get(j)+posx.get(k))/2, (posy.get(j)+posy.get(k))/2);
                     }
                 }
             }
-        }  
-        } else {
-          for (int i=0; i< gr.vertices.size(); i++){
-            if(atemp.n1 == gr.vertices.get(i)){
-                for(int j=0; j< gr.vertices.size(); j++){
-                    if (atemp.n2 == gr.vertices.get(j)){
-                        g.setColor(Color.WHITE);
-                        g.drawLine(posx.get(i)+8, posy.get(i)+8, posx.get(j)+8, posy.get(j)+8);
-                        g.fillRect(((posx.get(i)+posx.get(j))/2-15), ((posy.get(i)+posy.get(j))/2-15), 30, 30);
-                        g.setColor(Color.BLUE);
-                        g.fillOval(posx.get(i), posy.get(i), 20, 20);
-                        g.fillOval(posx.get(j), posy.get(j), 20, 20);
-                        gr.aristas.remove(atemp);
-                    }
-                }
-            }
-        }  
-    }
-        
-        prompt.setText(null);
-        cont = 0;
-        adda = false;
-        dela = false;
-        atemp = null;
-        ntemp = null;
+        }
     }
     
-    
-    
+      g.setColor(Color.BLUE);
+    for (int i=0; i<gr.vertices.size(); i++){
+        g.fillOval(posx.get(i), posy.get(i), 20, 20);
+    }
 }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         delv = false;
@@ -342,6 +274,7 @@ public void paintComponents(Graphics g){
                 } else {
                   Node n = new Node(invertice.getText());
                   gr.vertices.add(n);
+                  Process();
                   paintComponents(jPanel1.getGraphics());  
                 }
                 
@@ -352,10 +285,11 @@ public void paintComponents(Graphics g){
             }
         }
         if(delv==true){
+            Process();
                 paintComponents(jPanel1.getGraphics());
              
         }
-            if(adda==true || dela == true){
+            if(adda==true || dela == true || cmin == true){
                 if(cont==0){
                     boolean encontrado = false;
                     for (int i=0; i<posx.size(); i++) {
@@ -364,7 +298,12 @@ public void paintComponents(Graphics g){
                                 encontrado = true;
                                 cont ++;
                                 ntemp = gr.vertices.get(i);
-                                prompt.setText("Ahora haga click en el otro vértice al que es adyacente la arista");
+                                if (cmin == true){
+                                    prompt.setText("Ahora haga click en otro vértice que será el punto final");
+                                } else {
+                                  prompt.setText("Ahora haga click en el otro vértice al que es adyacente la arista");  
+                                }
+                                
                             } 
                         }
                     }
@@ -374,10 +313,11 @@ public void paintComponents(Graphics g){
                       cont = 0;
                       adda = false;
                       dela = false;
+                      cmin = false;
                     }  
                 } else {
-                   if (ina.getText().isEmpty() != true || dela == true){
-                      if (ina.getText().chars().allMatch(Character :: isDigit) == true || dela == true){
+                   if (ina.getText().isEmpty() != true || dela == true || cmin == true){
+                      if (ina.getText().chars().allMatch(Character :: isDigit) == true || dela == true || cmin == true){
                           boolean encontrado = false;
                         for (int i=0; i<posx.size(); i++) {
                             if(jPanel1.getMousePosition().x >= posx.get(i)-50 && jPanel1.getMousePosition().x <= posx.get(i)+50){
@@ -385,7 +325,7 @@ public void paintComponents(Graphics g){
                                     encontrado = true;
                                     cont++;
                                     if(ntemp == gr.vertices.get(i)){
-                                        if (dela == true){
+                                        if (dela == true || cmin == true){
                                            prompt2.setText("Por favor vuelva a intentarlo seleccionando 2 vértices distintos"); 
                                         } else {
                                            prompt2.setText("No se admiten lazos. Por favor vuelva a intentarlo seleccionando 2 vértices distintos"); 
@@ -395,12 +335,20 @@ public void paintComponents(Graphics g){
                                        cont = 0;
                                        adda = false;
                                        dela = false;
+                                       cmin = false;
                                     } else {
+                                        if(cmin == true){
+                                          prompt.setText(gr.FloydWarshall(ntemp, gr.vertices.get(i)));
+                                          prompt2.setText(null);
+                                        } else {
                                         Arista a = new Arista(ntemp, gr.vertices.get(i), Integer.parseInt(ina.getText()));
                                     boolean repetido = false;
                                     int repe = -1;
-                                    if (gr.aristas.size() == 0){
+                                    if (gr.aristas.isEmpty()){
                                        gr.aristas.add(a);
+                                       a.n1.adyacentes.add(a.n2);
+                                       a.n2.adyacentes.add(a.n1);
+                                       Process();
                                        paintComponents(jPanel1.getGraphics()); 
                                     } else {
                                        for(int j=0; j<gr.aristas.size(); j++){
@@ -415,12 +363,17 @@ public void paintComponents(Graphics g){
                                             gr.aristas.get(repe).SetPeso(Integer.parseInt(ina.getText()));   
                                            } else {
                                                atemp = gr.aristas.get(repe);
+                                               
+                                               Process();
                                               paintComponents(jPanel1.getGraphics()); 
                                            }
                                             
                                         } else {
                                            if (dela == false){
                                               gr.aristas.add(a);
+                                              a.n1.adyacentes.add(a.n2);
+                                              a.n2.adyacentes.add(a.n1);
+                                              Process();
                                               paintComponents(jPanel1.getGraphics()); 
                                            } else {
                                                prompt.setText(null);
@@ -431,7 +384,7 @@ public void paintComponents(Graphics g){
                                     }
                                     }
                                     
-                                    
+                                    } 
                                 } 
                             }
                         }
@@ -471,7 +424,8 @@ public void paintComponents(Graphics g){
         cont = 0;
         adda = false;
         dela = false;
-        if (posx.size() == 0){
+        cmin = false;
+        if (posx.isEmpty()){
            prompt2.setText("No hay vértices para eliminar");
         } else {
          delv = true;
@@ -486,6 +440,7 @@ public void paintComponents(Graphics g){
         addv = false;
         adda = false;
         dela = false; 
+        cmin = false;
         cont = 0;
         if (gr.vertices.size() < 2){
             prompt2.setText("Necesita al menos 2 vértices para añadir una arista");
@@ -509,8 +464,9 @@ public void paintComponents(Graphics g){
         addv = false;
         adda = false;
         dela = false;
+        cmin = false;
         cont = 0;
-        if (gr.aristas.size() == 0){
+        if (gr.aristas.isEmpty()){
             prompt2.setText("No hay aristas para eliminar ");
         } else {
            dela = true;
@@ -523,8 +479,88 @@ public void paintComponents(Graphics g){
        
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void invActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_invActionPerformed
+
+    private void bfsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfsActionPerformed
+        if(gr.vertices.isEmpty()){
+            prompt.setText(null);
+            prompt2.setText("Por favor añada nodos para poder hacer un recorrido");
+        } else {
+            prompt2.setText(null);
+            prompt.setText(null);
+            if(inv.getText().isEmpty()){
+                prompt2.setText("Por favor ingrese el vértice inicial y vuelva a intentarlo");
+            } else {
+                boolean existe = false;
+                for (int i=0; i<gr.vertices.size(); i++){
+                    if (inv.getText().equalsIgnoreCase(gr.vertices.get(i).nombre)){
+                        existe = true;
+                        prompt.setText(gr.BFS(i));
+                    }
+                }
+                if(existe == false){
+                    prompt2.setText("El vértice ingresado no existe. Por favor vuelva a intentarlo");
+                }
+            }
+        }
+    }//GEN-LAST:event_bfsActionPerformed
+
+    private void dfsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsActionPerformed
+      if(gr.vertices.isEmpty()){
+            prompt.setText(null);
+            prompt2.setText("Por favor añada nodos para poder hacer un recorrido");
+        } else {
+            prompt2.setText(null);
+            prompt.setText(null);
+            if(inv.getText().isEmpty()){
+                prompt2.setText("Por favor ingrese el vértice inicial y vuelva a intentarlo");
+            } else {
+                boolean existe = false;
+                for (int i=0; i<gr.vertices.size(); i++){
+                    if (inv.getText().equalsIgnoreCase(gr.vertices.get(i).nombre)){
+                        existe = true;
+                        gr.Clear();
+                        gr.DFS(i);
+                        prompt.setText(gr.dfsout);
+                    }
+                }
+                if(existe == false){
+                    prompt2.setText("El vértice ingresado no existe. Por favor vuelva a intentarlo");
+                }
+            }
+        }  
+    }//GEN-LAST:event_dfsActionPerformed
+
+    private void recorridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoActionPerformed
+        delv = false;
+        addv = false;
+        cont = 0;
+        adda = false;
+        dela = false;
+        cmin = false;
+        ntemp = null;
+        if (gr.vertices.size() < 1){
+            prompt2.setText("Necesita al menos un vértices para buscar un camino mínimo");
+        } else {
+          cmin = true;
+        if (cont ==0){
+           gr.Clear();
+           gr.LlenarMatrices();
+           prompt.setText("Haga click en un vértice que será el punto de partida");
+        }
+        
+        prompt2.setText(null);  
+        }
+        gr.Clear();
+        gr.LlenarMatrices();
+        //gr.FloydWarshall();
+    }//GEN-LAST:event_recorridoActionPerformed
+
+    
     public void Init(){
-       
+       mt.setVisible(true);
     }
     
     public void Process(){
@@ -571,6 +607,8 @@ public void paintComponents(Graphics g){
                            
                         }
                         gr.aristas.remove(z);
+                        gr.aristas.get(z).n2.adyacentes.remove(gr.aristas.get(z).n1);
+                        gr.aristas.get(z).n1.adyacentes.remove(gr.aristas.get(z).n2);
                     }
                     gr.vertices.remove(i);
                     posx.remove(i);
@@ -602,7 +640,8 @@ public void paintComponents(Graphics g){
             if(atemp.n1 == gr.vertices.get(i)){
                 for(int j=0; j< gr.vertices.size(); j++){
                     if (atemp.n2 == gr.vertices.get(j)){
-
+                        atemp.n2.adyacentes.remove(atemp.n1);
+                        atemp.n1.adyacentes.remove(atemp.n2);
                         gr.aristas.remove(atemp);
                     }
                 }
@@ -655,7 +694,10 @@ public void paintComponents(Graphics g){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bfs;
+    private javax.swing.JButton dfs;
     private javax.swing.JTextField ina;
+    private javax.swing.JTextField inv;
     private javax.swing.JTextField invertice;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -663,7 +705,10 @@ public void paintComponents(Graphics g){
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel mt;
     private javax.swing.JLabel prompt;
     private javax.swing.JLabel prompt2;
+    private javax.swing.JButton recorrido;
+    private javax.swing.JLabel templabel;
     // End of variables declaration//GEN-END:variables
 }

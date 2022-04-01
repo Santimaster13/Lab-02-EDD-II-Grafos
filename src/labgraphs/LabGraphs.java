@@ -17,7 +17,9 @@ public class LabGraphs {
     public static void main(String[] args) {
         Interface i = new Interface();
         i.setVisible(true);
-        
+        i.setSize(1200, 900);
+        i.setResizable(false);
+        i.Init();
     }
     
 }
